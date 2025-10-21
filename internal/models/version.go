@@ -7,4 +7,5 @@ type Versions struct {
 	ProductC string
 	ProductD string
 	ProductE string
+	ClientID uint
 }
