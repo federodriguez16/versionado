@@ -56,3 +56,32 @@ func CargarDatos(f string) error {
 
 	return nil
 }
+
+func ListarDatos(c string) {
+	db, err := database.GetConnection()
+
+	if err != nil {
+		fmt.Println("Hubo un error de conexion!")
+		os.Exit(1)
+	}
+
+	var client models.Client
+	var version models.Versions
+	result := db.Where("name = ?", c).First(&client)
+
+	if result.Error != nil {
+		fmt.Println("Error:", result.Error)
+		return
+	}
+
+	clientId := client.ID
+
+	result = db.Where("client_id = ?", clientId).First(&version)
+
+	if result.Error != nil {
+		fmt.Println("Error:", result.Error)
+		return
+	}
+
+	handler.Mostrar(&client, &version)
+}
