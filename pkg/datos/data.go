@@ -85,3 +85,22 @@ func ListarDatos(c string) {
 
 	handler.Mostrar(&client, &version)
 }
+
+func ActualizarDatos(c string, s string, v string) {
+	db, err := database.GetConnection()
+
+	if err != nil {
+		fmt.Println("Hubo un error de conexion!")
+		os.Exit(1)
+	}
+
+	var client models.Client
+
+	result := db.Where("name = ?", c).First(&client)
+
+	if result.Error != nil {
+		fmt.Println("Error:", result.Error)
+	}
+
+	db.Model(&models.Versions{}).Where("client_id = ?", client.ID).Update(s, v)
+}
