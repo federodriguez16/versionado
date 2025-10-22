@@ -104,3 +104,24 @@ func ActualizarDatos(c string, s string, v string) {
 
 	db.Model(&models.Versions{}).Where("client_id = ?", client.ID).Update(s, v)
 }
+
+func EliminarDatos(c string) {
+	db, err := database.GetConnection()
+
+	if err != nil {
+		fmt.Println("Hubo un error de conexion!")
+		os.Exit(1)
+	}
+
+	var client models.Client
+
+	result := db.Where("name = ?", c).First(&client)
+
+	if result.Error != nil {
+		fmt.Println("Error:", result.Error)
+		return
+	}
+
+	db.Where("client_id = ?", client.ID).Delete(&models.Versions{})
+	db.Delete(&models.Client{}, client.ID)
+}
