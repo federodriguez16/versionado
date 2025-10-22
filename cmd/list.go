@@ -16,9 +16,9 @@ func init() {
 var listCmd = &cobra.Command{
 	Use:   "list --client <nombre>",
 	Short: "List versions of a client",
-	Long: `The list command allows you to display the stored data for a specific client or for all clients.
+	Long: `The list command allows you to display the stored data for a specific client.
 
-You can use the --client (or -c) flag to filter by a specific client. If this flag is not provided, data for all clients will be listed (if implemented that way).
+You can use the --client (or -c) flag to filter by a specific client.
 
 Example usage:
 
