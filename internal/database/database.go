@@ -19,10 +19,31 @@ func GetConnection() (*gorm.DB, error) {
 	if err != nil {
 	}
 
-	url := os.Getenv("VERSIONADO_DB_URL")
-	user := os.Getenv("VERSIONADO_DB_USER")
-	pw := os.Getenv("VERSIONADO_DB_PASSWORD")
-	name := os.Getenv("VERSIONADO_DB_NAME")
+	url, exist := os.LookupEnv("VERSIONADO_DB_URL")
+
+	if !exist {
+		fmt.Println("environment variable is not configure!")
+		os.Exit(1)
+	}
+	user, exist := os.LookupEnv("VERSIONADO_DB_USER")
+
+	if !exist {
+		fmt.Println("environment variable is not configure!")
+		os.Exit(1)
+	}
+	pw, exist := os.LookupEnv("VERSIONADO_DB_PASSWORD")
+
+	if !exist {
+		fmt.Println("environment variable is not configure!")
+		os.Exit(1)
+	}
+
+	name, exist := os.LookupEnv("VERSIONADO_DB_NAME")
+
+	if !exist {
+		fmt.Println("environment variable is not configure!")
+		os.Exit(1)
+	}
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s", user, pw, url, name)
 
