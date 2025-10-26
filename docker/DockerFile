@@ -1,0 +1,20 @@
+FROM golang:1.25-alpine AS base
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+
+COPY . .
+
+
+FROM base AS builder
+RUN go build -o versionado
+
+FROM alpine:3.22.1 AS cli
+RUN apk update && apk add iputils-ping traceroute --no-cache
+COPY --from=base /app/test.csv /app/
+COPY --from=builder /app/versionado /app/
+
+WORKDIR /app
+CMD [ "tail", "-f", "/dev/null" ]

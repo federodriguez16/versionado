@@ -1,0 +1,6 @@
+name,url,product-a,product-b,product-c,product-d,product-e
+cliente1,example1.com,v1.0.6,v1.0.3,v1.0.1,v1.0.7,v1.0.0_beta
+cliente2,example2.com,v1.0.1,v1.0.4,v1.0.2,v1.0.9,v1.2.1
+cliente3,example3.com,v1.0.3,v1.0.1,v1.0.2,v1.0.2,v1.2.3
+cliente4,example4.com,v1.0.10,v1.0.0,v1.0.2,v1.0.7,v1.0.10
+cliente5,example5.com,v1.2.6,v1.3.1,v1.4.1,v1.1.23,v1.1.0

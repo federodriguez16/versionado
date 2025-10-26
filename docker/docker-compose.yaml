@@ -1,0 +1,29 @@
+services:
+  
+  versionado:
+    build:
+      context: ..
+      dockerfile: docker/DockerFile
+    container_name: versionado
+    environment:
+      - VERSIONADO_DB_URL=mariadb
+      - VERSIONADO_DB_USER=root
+      - VERSIONADO_DB_PASSWORD=r00t
+      - VERSIONADO_DB_NAME=versionado
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: mariadb
+    hostname: mariadb
+    command: --sql_mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION --init-file="/docker-entrypoint-initdb.d/setup.sql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: r00t
+      MYSQL_PASSWORD: r00t
+      MYSQL_BIND_ADDRESS: 0.0.0.0
+    volumes:
+      - ./mariadb-data:/var/lib/mysql
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    restart: unless-stopped
