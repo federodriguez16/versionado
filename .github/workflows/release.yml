@@ -1,0 +1,38 @@
+on:
+  release:
+    types: [created]
+
+name: Build
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Versión actualizada
+
+      - name: Setup Go
+        uses: actions/setup-go@v5 # Versión actualizada
+        with:
+          go-version: "1.25.1"
+
+      - name: Build and Package
+        run: |
+          # Compila para Linux y empaqueta
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o versionado .
+          tar czf versionado_linux_amd64.tar.gz versionado
+
+          # Compila para Windows y empaqueta
+          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o versionado.exe .
+          zip versionado_windows_amd64.zip versionado.exe
+
+      - name: Upload Assets to Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ github.ref_name }} \
+            versionado_linux_amd64.tar.gz \
+            versionado_windows_amd64.zip
